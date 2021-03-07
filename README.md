@@ -1,4 +1,4 @@
-# Put title of your app here
+# OneHotMinute Timer
 
 ![Workflow result](https://github.com/GuilhE/OneHotMinute-Compose/workflows/Check/badge.svg)
 
