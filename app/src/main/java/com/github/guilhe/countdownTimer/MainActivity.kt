@@ -33,12 +33,8 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,23 +45,22 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.androiddevchallenge.R
 import com.github.guilhe.countdownTimer.ui.CircularProgress
 import com.github.guilhe.countdownTimer.ui.theme.AppTheme
 
 class MainActivity : AppCompatActivity() {
 
-   private val step = 1000
-   private val max = 60
-   private val timeLiveData = MutableLiveData(max)
-   private val time: LiveData<Int> = timeLiveData
-   private val pausedLiveData = MutableLiveData(true)
-   private val paused: LiveData<Boolean> = pausedLiveData
-   private val timer = object : CountDownTimer(max * 1000L, step.toLong()) {
+    private val step = 1000
+    private val max = 60
+    private val timeLiveData = MutableLiveData(max)
+    private val time: LiveData<Int> = timeLiveData
+    private val pausedLiveData = MutableLiveData(true)
+    private val paused: LiveData<Boolean> = pausedLiveData
+    private val timer = object : CountDownTimer(max * 1000L, step.toLong()) {
         override fun onTick(millisUntilFinished: Long) {
             val current = timeLiveData.value ?: 0
-            if(current <= 0) {
+            if (current <= 0) {
                 onFinish()
             } else {
                 timeLiveData.value = current - 1
@@ -78,14 +73,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
                 val timeValue by time.observeAsState(max)
-                val isPaused  by paused.observeAsState(true)
+                val isPaused by paused.observeAsState(true)
                 CountdownScreen(timeValue, max, isPaused) {
                     when (it) {
                         Action.Play -> {
@@ -108,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-private fun CountdownScreen(time: Int, max :Int, paused: Boolean, onAction: (Action) -> Unit) {
+private fun CountdownScreen(time: Int, max: Int, paused: Boolean, onAction: (Action) -> Unit) {
     ConstraintLayout(Modifier.fillMaxSize()) {
         val (progress, label, btnStart, btnStop) = createRefs()
         CircularProgress(
@@ -118,7 +111,7 @@ private fun CountdownScreen(time: Int, max :Int, paused: Boolean, onAction: (Act
                 .constrainAs(progress) { centerTo(parent) },
             progress = time.toFloat() * 100 / max,
             color = MaterialTheme.colors.primary,
-            animationSpec = tween(durationMillis = if(time == max) 2000 else 200, easing = LinearEasing)
+            animationSpec = tween(durationMillis = if (time == max) 2000 else 200, easing = LinearEasing)
         )
         Text(
             text = "$time",
@@ -137,7 +130,8 @@ private fun CountdownScreen(time: Int, max :Int, paused: Boolean, onAction: (Act
                 .constrainAs(btnStart) {
                     top.linkTo(progress.top, 100.dp)
                     start.linkTo(progress.end, 10.dp)
-                }) {
+                }
+        ) {
             Image(
                 painterResource(if (paused) R.drawable.ic_play else R.drawable.ic_pause),
                 stringResource(if (paused) R.string.btn_play else R.string.btn_pause)
@@ -150,7 +144,8 @@ private fun CountdownScreen(time: Int, max :Int, paused: Boolean, onAction: (Act
                 .constrainAs(btnStop) {
                     top.linkTo(btnStart.bottom, 2.dp)
                     end.linkTo(btnStart.end, 40.dp)
-                }) {
+                }
+        ) {
             Image(painterResource(R.drawable.ic_stop), stringResource(R.string.btn_stop))
         }
     }
@@ -159,7 +154,7 @@ private fun CountdownScreen(time: Int, max :Int, paused: Boolean, onAction: (Act
 @Composable
 @Preview
 fun Mock() {
-    AppTheme { CountdownScreen(70, 60,  true, onAction = { }) }
+    AppTheme { CountdownScreen(70, 60, true, onAction = { }) }
 }
 
 sealed class Action {
