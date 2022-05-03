@@ -6,7 +6,7 @@
 [One Hot Minute](https://www.youtube.com/watch?v=WrKm8ieK4BA) timer! 😃
 
 ## :bulb: Motivation and Context
-I'm working on a funkier timer, but one week is to short, so stay tuned!
+I'm working on a [funkier timer](https://github.com/GuilhE/KitchenTimer), but one week is to short, so stay tuned!
 Until so, here's the 2nd week challenge, it's based on my [CircularProgressView](https://github.com/GuilhE/CircularProgressView)
 
 ## :camera_flash: Screenshots
